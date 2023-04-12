@@ -5,13 +5,9 @@ const fs = require('fs');
 const app = express();
 const PORT = 3001;
 
-// Serve static files from the "public" directory
 app.use(express.static('public'));
-
-// Parse incoming JSON requests
 app.use(express.json());
 
-// Load existing notes from file
 let notes = [];
 fs.readFile('./db/db.json', 'utf8', (err, data) => {
   if (err) {
@@ -21,7 +17,6 @@ fs.readFile('./db/db.json', 'utf8', (err, data) => {
   notes = JSON.parse(data);
 });
 
-// API endpoints for getting and posting notes
 app.get('/api/notes', (req, res) => {
   res.json(notes);
 });
@@ -43,7 +38,6 @@ app.post('/api/notes', (req, res) => {
   });
 });
 
-// Serve the notes page for any other request
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/notes.html'));
 });
@@ -66,7 +60,6 @@ app.delete('/api/notes/:id', (req, res) => {
   }
 });
 
-// Start the server
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });
